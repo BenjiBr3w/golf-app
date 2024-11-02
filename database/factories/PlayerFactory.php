@@ -18,6 +18,8 @@ class PlayerFactory extends Factory
     {
         return [
             'name'=> $faker->firstName(),
+            'handicap' => $faker->randomFloat(1, -20, 50),
+            
         ];
     }
 }
