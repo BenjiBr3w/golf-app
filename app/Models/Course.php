@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Scores extends Model
+class Course extends Model
 {
     use HasFactory;
 
-    public function player()
+    public function holes() 
     {
-        return $this->belongsTo(Player::class);
+        return $this->hasMany(Hole::class);
     }
 }

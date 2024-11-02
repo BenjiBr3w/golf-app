@@ -17,9 +17,9 @@ class PlayerFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=> $faker->firstName(),
-            'handicap' => $faker->randomFloat(1, -20, 50),
-            
+            'name'=> fake()->firstName(),
+            'handicap' => fake()->randomFloat(1, -20, 50),
+            'player_id' => fake()->numberBetween(1, 100),
         ];
     }
 }
