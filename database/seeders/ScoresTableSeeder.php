@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Scores;
+use App\Models\Player;
 
 class ScoresTableSeeder extends Seeder
 {
@@ -12,6 +14,14 @@ class ScoresTableSeeder extends Seeder
      */
     public function run(): void
     {
-        factory(App\Models\Scores::class, 100)->create();
+        $player = Player::first();
+        if ($player) {
+            $a = new Scores;
+            $a->score = 74;
+            $a->player_id = $player->id;
+            $a->save();
+        }
+
+        Scores::factory()->count(30)->create();
     }
 }

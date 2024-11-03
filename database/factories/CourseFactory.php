@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Scores>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Course>
  */
-class ScoresFactory extends Factory
+class CourseFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,9 @@ class ScoresFactory extends Factory
     public function definition(): array
     {
         return [
-            'score' => fake()->randomFloat(60, 150),
-            'player_id' => fake()->numberBetween(1,2),
+            'name'=> fake()->firstName(),
+            'length'=> fake()->numberBetween(5000, 8000),
+            'par'=> fake()->numberBetween(68, 74),
         ];
     }
 }

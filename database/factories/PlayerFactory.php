@@ -19,7 +19,6 @@ class PlayerFactory extends Factory
         return [
             'name'=> fake()->firstName(),
             'handicap' => fake()->randomFloat(1, -20, 50),
-            'player_id' => fake()->numberBetween(1, 100),
         ];
     }
 }

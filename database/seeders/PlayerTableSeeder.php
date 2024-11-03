@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Player;
 
 class PlayerTableSeeder extends Seeder
 {
@@ -15,19 +16,9 @@ class PlayerTableSeeder extends Seeder
         $harry = new Player;
         $harry->name = "Harry";
         $harry->handicap = 0.1;
-        $harry->score_id = 1;
         $harry->save();
 
-        $jack = new Player;
-        $jack->name = "Jack";
-        $jack->handicap = -1.5;
-        $jack->save();
-        
-        $max = new Player;
-        $max->name = "Max";
-        $max->handicap = 2.1;
-        $max->save();
+        Player::factory()->count(50)->create();
 
-        factory(App\Models\Player::class, 5)->create();
     }
 }

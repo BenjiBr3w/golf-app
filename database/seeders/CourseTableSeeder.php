@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Course;
 
 class CourseTableSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class CourseTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Course::factory()->count(4)->create();
+
     }
 }
