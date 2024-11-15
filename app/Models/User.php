@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
@@ -22,6 +23,53 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    /**
+     * Specifies the player that a given user_id links to.
+     */
+    public function player()
+    {
+        return $this->hasOne(Player::class, 'user_id');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+
+    /**
+     * Function specifying the many to many relationship of a user and their friends.
+     */
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friend_users', 'user_id', 'friend_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Function that assigns a friend to a given user.
+     */
+    public function addFriend(User $user)
+    {
+        $this->friends()->attach($user->id);
+    }
+
+    /**
+     * Function that removes a friend from a given user.
+     */
+    public function removeFriend(User $user)
+    {
+        $this->friends()->detach($user->id);
+    }
+
+    /**
+     * Function that finds the friends associated with a given user.
+     */
+    public function isFriendsWith(User $user)
+    {
+        return $this->friends()->where('friend_id', $user->id)->exists();
+    }
 
     /**
      * The attributes that should be hidden for serialization.

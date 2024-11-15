@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Player;
+use App\Models\User;
 
 class PlayerTableSeeder extends Seeder
 {
@@ -13,12 +14,13 @@ class PlayerTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $harry = new Player;
-        $harry->name = "Harry";
-        $harry->handicap = 0.1;
-        $harry->save();
-
-        Player::factory()->count(50)->create();
+        User::all()->each(function ($user) {
+            Player::create([
+                'name' => fake()->name,
+                'handicap' => fake()->randomFloat(1, -2.0, 2.0),
+                'user_id' => $user->id, // Associates each player with a unique user
+            ]);
+        });
 
     }
 }

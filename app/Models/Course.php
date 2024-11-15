@@ -9,6 +9,11 @@ class Course extends Model
 {
     use HasFactory;
 
+
+    /**
+     * Function specifying the many to one relationship of holes and
+     * which course they belong to.
+     */
     public function holes() 
     {
         return $this->hasMany(Hole::class);

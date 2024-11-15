@@ -18,7 +18,8 @@ class PlayerFactory extends Factory
     {
         return [
             'name'=> fake()->firstName(),
-            'handicap' => fake()->randomFloat(1, -20, 50),
+            'handicap'=> fake()->randomFloat(1, -20, 50),
+            'user_id'=> fake()->numberBetween(1,100),
         ];
     }
 }
