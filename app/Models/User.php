@@ -37,6 +37,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 
     /**
      * Function specifying the many to many relationship of a user and their friends.
@@ -69,6 +74,11 @@ class User extends Authenticatable
     public function isFriendsWith(User $user)
     {
         return $this->friends()->where('friend_id', $user->id)->exists();
+    }
+
+    public function friendRequests()
+    {
+        return $this->belongsToMany(User::class, 'friend_user', 'friend_id', 'user_id')->wherePivot('accepted', false);
     }
 
     /**

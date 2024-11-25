@@ -18,6 +18,7 @@ class PostFactory extends Factory
     {
         return [
             'content' => fake()->paragraph($nbSentences = 2, $variableNbSentences = true),
+            'caption' => fake()->sentence(),
             'image_link' => fake()->imageUrl($width = 640, $height = 480),
             'user_id' => fake()->numberBetween($min = 1, $max = 50),
 

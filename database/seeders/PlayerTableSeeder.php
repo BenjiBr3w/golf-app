@@ -14,6 +14,7 @@ class PlayerTableSeeder extends Seeder
      */
     public function run(): void
     {
+
         User::all()->each(function ($user) {
             Player::create([
                 'name' => fake()->name,
