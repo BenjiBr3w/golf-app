@@ -43,16 +43,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route for viewing all posts
 Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
 
-Route::post('/posts/{post}/comments', [PostsController::class, 'store'])
+// Route for creating a new post (no postId needed here)
+Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');
+Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
+
+// Route for adding a comment to an existing post (postId required)
+Route::post('/posts/{post}/comments', [PostsController::class, 'storeComment'])
     ->middleware('auth')
     ->name('posts.comments.store');
 
-
-Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');
-
-Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
 
 
 require __DIR__.'/auth.php';

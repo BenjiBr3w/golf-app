@@ -15,18 +15,20 @@
         </div>
     @endif
 
+    <!-- Post Form -->
     <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <!-- Caption -->
+        <!-- Post Content -->
         <div class="mb-4">
-            <label for="caption" class="block text-gray-700 font-bold mb-2">Caption</label>
+            <label for="content" class="block text-gray-700 font-bold mb-2">Post Content</label>
             <textarea 
-                id="caption" 
-                name="caption" 
+                id="content" 
+                name="content" 
                 rows="3" 
                 class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" 
-                required>{{ old('caption') }}</textarea>
+                placeholder="Write something interesting..." 
+                required>{{ old('content') }}</textarea>
         </div>
 
         <!-- Image Upload -->
@@ -38,14 +40,15 @@
                 name="image" 
                 accept="image/*" 
                 class="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300">
+            <small class="text-gray-500">Accepted formats: JPEG, PNG, JPG, GIF. Max size: 2MB.</small>
         </div>
 
         <!-- Submit Button -->
         <button 
             type="submit" 
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+            class="bg-blue-500 hover:bg-blue-700 text-grey font-bold py-2 px-4 rounded-lg">
             Create Post
         </button>
     </form>
-</div>
 @endsection
+

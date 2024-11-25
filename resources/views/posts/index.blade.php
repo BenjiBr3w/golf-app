@@ -54,7 +54,7 @@
             ></textarea>
             <button 
                 type="submit" 
-                class="bg-blue-500 hover:bg-blue-700 text-gray font-bold py-2 px-4 rounded mt-2"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
             >
                 Add Comment
             </button>
@@ -81,7 +81,12 @@
                 },
                 body: formData,
             })
-            .then(response => response.json()) // Parse JSON response
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Server responded with an error');
+            })
             .then(data => {
                 if (data.success) {
                     const commentsList = this.closest('.post-container').querySelector('.comments-list');
@@ -100,11 +105,12 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred. Please ensure your server is returning valid JSON.');
+                alert('An error occurred. Please try again later.');
             });
         });
     });
 </script>
 @endsection
+
 
 
