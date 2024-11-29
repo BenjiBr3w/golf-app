@@ -6,6 +6,7 @@ use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,6 +55,12 @@ Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
 Route::post('/posts/{post}/comments', [PostsController::class, 'storeComment'])
     ->middleware('auth')
     ->name('posts.comments.store');
+
+
+Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+
+Route::get('/my-posts', [PostController::class, 'myPosts'])->name('posts.myPosts');
+
 
 
 

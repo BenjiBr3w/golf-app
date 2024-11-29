@@ -42,20 +42,24 @@ class PostsController extends Controller
     {
         $request->validate([
             'content' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
         ]);
 
-        $imageLink = null;
+        $imagePath = null;
+
+        // Save the uploaded image, if any
         if ($request->hasFile('image')) {
-            $imageLink = $request->file('image')->store('images', 'public');
+            $imagePath = $request->file('image')->store('images', 'public');
         }
 
+        // Create a new post with the provided content and optional image
         Post::create([
-            'user_id' => auth()->id(),
-            'content' => $request->content,
-            'image_link' => $imageLink,
+            'user_id' => auth()->id(), // Assign to the authenticated user
+            'content' => $request->content, // Post content
+            'image' => $imagePath, // Image path saved in 'image' column
         ]);
 
+        // Redirect back to the posts index with a success message
         return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
 
@@ -97,5 +101,12 @@ class PostsController extends Controller
             ],
         ]);
     }
+
+    public function myPosts()
+    {
+        $userPosts = auth()->user()->posts()->latest()->paginate(10);
+        return view('posts.myPosts', compact('userPosts'));
+    }
+
 
 }

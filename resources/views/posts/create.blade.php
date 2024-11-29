@@ -36,7 +36,7 @@
             <label for="image" class="block text-gray-700 font-bold mb-2">Image (Optional)</label>
             <input 
                 type="file" 
-                id="image" 
+                id="image"
                 name="image" 
                 accept="image/*" 
                 class="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300">

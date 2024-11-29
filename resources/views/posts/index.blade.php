@@ -2,13 +2,15 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h1 class="text-2xl font-bold mb-6">Friends' Posts</h1>
+    <h1 class="text-2xl text-white font-bold mb-6">Friends' Posts</h1>
 
     @foreach ($posts as $post)
     <div class="post-container bg-white shadow rounded-lg p-6 mb-6">
         <!-- Post Header -->
         <h2 class="text-lg font-semibold">
-            {{ $post->user->name }}
+            <a href="{{ route('user.show', $post->user->id) }}" class="text-blue-600 hover:underline">
+                {{ $post->user->name }}
+            </a>
             <span class="text-gray-500 text-sm">posted on {{ $post->created_at->format('d M Y, H:i') }}</span>
         </h2>
 
@@ -28,7 +30,9 @@
             <ul class="comments-list mt-2 space-y-4">
                 @foreach ($post->comments as $comment)
                 <li class="mb-4 bg-gray-100 p-3 rounded-lg">
-                    <strong>{{ $comment->user->name }}</strong>
+                    <a href="{{ route('user.show', $comment->user->id) }}" class="text-blue-600 hover:underline">
+                        <strong>{{ $comment->user->name }}</strong>
+                    </a>
                     <span class="text-gray-500 text-sm">said on {{ $comment->created_at->format('d M Y, H:i') }}</span>
                     <p>{{ $comment->content }}</p>
                 </li>
@@ -92,7 +96,9 @@
                     const commentsList = this.closest('.post-container').querySelector('.comments-list');
                     const newComment = `
                         <li class="mb-4 bg-gray-100 p-3 rounded-lg">
-                            <strong>${data.comment.user.name}</strong>
+                            <a href="/users/${data.comment.user.id}" class="text-blue-600 hover:underline">
+                                <strong>${data.comment.user.name}</strong>
+                            </a>
                             <span class="text-gray-500 text-sm">said just now</span>
                             <p>${data.comment.content}</p>
                         </li>
@@ -111,6 +117,8 @@
     });
 </script>
 @endsection
+
+
 
 
 

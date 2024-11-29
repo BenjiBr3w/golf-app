@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $user = Auth::user(); // Use Auth facade to get the currently logged-in user
 
         if ($user) {
-            $totalPosts = Post::count(); // Count all posts
+            $totalPosts = auth()->user()->posts()->count(); // Count all posts
             $totalComments = Comment::count(); // Count all comments
             $friendCount = $user->friends()->count(); // Get the count of user's friends
 
@@ -40,5 +40,12 @@ class DashboardController extends Controller
 
         return response()->json($friends);
     }
+
+    public function dashboard()
+    {
+        $totalUserPosts = auth()->user()->posts()->count();
+        return view('dashboard', compact('totalUserPosts'));
+    }
+
 
 }
