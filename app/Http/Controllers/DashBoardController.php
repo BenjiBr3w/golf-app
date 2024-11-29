@@ -17,9 +17,10 @@ class DashboardController extends Controller
             $totalPosts = auth()->user()->posts()->count(); // Count all posts
             $totalComments = Comment::count(); // Count all comments
             $friendCount = $user->friends()->count(); // Get the count of user's friends
+            $notifications = auth()->user()->notifications;
 
             // Pass data to the view
-            return view('dashboard', compact('totalPosts', 'totalComments', 'friendCount'));
+            return view('dashboard', compact('totalPosts', 'totalComments', 'friendCount', 'notifications'));
         }
 
         // Redirect to login if no user is logged in
@@ -40,12 +41,4 @@ class DashboardController extends Controller
 
         return response()->json($friends);
     }
-
-    public function dashboard()
-    {
-        $totalUserPosts = auth()->user()->posts()->count();
-        return view('dashboard', compact('totalUserPosts'));
-    }
-
-
 }

@@ -59,7 +59,7 @@ Route::post('/posts/{post}/comments', [PostsController::class, 'storeComment'])
 
 Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 
-Route::get('/my-posts', [PostController::class, 'myPosts'])->name('posts.myPosts');
+Route::get('/my-posts', [PostsController::class, 'myPosts'])->name('posts.myPosts');
 
 
 

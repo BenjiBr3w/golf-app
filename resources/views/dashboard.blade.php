@@ -6,19 +6,45 @@
 
         <!-- Dashboard Stats -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="bg-indigo-500 text-gray rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold">Posts</h3>
+            <!-- Posts Stats -->
+            <a href="{{ route('posts.myPosts') }}" class="bg-indigo-500 text-gray-100 rounded-lg shadow p-6 hover:bg-indigo-600 transition">
+                <h3 class="text-lg font-semibold">My Posts</h3>
                 <p class="text-3xl font-bold">{{ $totalPosts }}</p>
-            </div>
+            </a>
 
+            <!-- Friends Stats -->
             <div 
-                class="bg-green-500 text-grey rounded-lg shadow p-6 cursor-pointer" 
+                class="bg-green-500 text-gray-100 rounded-lg shadow p-6 cursor-pointer hover:bg-green-600 transition" 
                 id="friends-box"
                 onclick="showFriendsList()"
             >
                 <h3 class="text-lg font-semibold">Friends</h3>
                 <p class="text-3xl font-bold" id="friend-count">{{ $friendCount }}</p>
             </div>
+
+            <!-- Notifications -->
+            <a href="#notifications" class="bg-yellow-500 text-gray-100 rounded-lg shadow p-6 hover:bg-yellow-600 transition">
+                <h3 class="text-lg font-semibold">Notifications</h3>
+                <p class="text-3xl font-bold">{{ $notifications->count() }}</p>
+            </a>
+        </div>
+
+        <!-- Notifications Section -->
+        <div id="notifications" class="bg-white shadow rounded-lg p-6 mt-8">
+            <h2 class="text-lg font-bold mb-4">Notifications</h2>
+            <ul class="list-disc pl-5">
+                @forelse ($notifications as $notification)
+                    <li class="mb-2">
+                        <strong>{{ $notification->data['commenter_name'] }}</strong> commented on your post: 
+                        <a href="{{ route('posts.show', $notification->data['post_id']) }}" class="text-blue-500 underline">
+                            {{ Str::limit($notification->data['content'], 50) }}
+                        </a>
+                        <span class="text-sm text-gray-500 block">{{ $notification->created_at->diffForHumans() }}</span>
+                    </li>
+                @empty
+                    <li class="text-gray-500">No notifications yet.</li>
+                @endforelse
+            </ul>
         </div>
 
         <!-- Friends Modal -->
@@ -58,7 +84,6 @@
         <div class="mt-8">
             <h3 class="text-xl font-semibold text-gray-800">Search Results</h3>
             <ul id="search-results" class="space-y-2 mt-4">
-                <!-- Results populated dynamically -->
                 @foreach ($searchResults ?? [] as $user)
                     <li class="flex justify-between items-center p-2 bg-gray-100 rounded">
                         <span class="text-gray-800">{{ $user->name }}</span>
@@ -73,7 +98,6 @@
             </ul>
         </div>
     </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -119,10 +143,6 @@
     function hideFriendsList() {
         document.getElementById('friends-modal').classList.add('hidden');
     }
-
-    // Ensure script loads after the DOM is ready
-    document.addEventListener('DOMContentLoaded', function () {
-        // Optional: Any event listeners to attach can go here
-    });
 </script>
 @endsection
+

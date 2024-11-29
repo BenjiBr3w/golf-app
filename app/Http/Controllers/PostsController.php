@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Notifications\CommentNotification;
 
 class PostsController extends Controller
 {
@@ -90,6 +91,10 @@ class PostsController extends Controller
             'image_link' => $imageLink,
         ]);
 
+        if ($post->user_id !== auth()->id()) {
+            $post->user->notify(new CommentNotification($comment));
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Successful!',
@@ -105,7 +110,7 @@ class PostsController extends Controller
     public function myPosts()
     {
         $userPosts = auth()->user()->posts()->latest()->paginate(10);
-        return view('posts.myPosts', compact('userPosts'));
+        return view('user.myPosts', compact('userPosts'));
     }
 
 
