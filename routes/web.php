@@ -7,6 +7,8 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Kernel;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,6 +44,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::patch('/admin/users/{id}/role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
+    Route::delete('/admin/posts/{id}', [AdminController::class, 'deletePost'])->name('admin.deletePost');
+});
+
+Route::middleware(['role:moderator'])->group(function () {
+    Route::get('/moderator/panel', [ModeratorController::class, 'index'])->name('moderator.panel');
 });
 
 // Route for viewing all posts

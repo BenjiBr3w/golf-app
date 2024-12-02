@@ -81,19 +81,9 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'friend_user', 'friend_id', 'user_id')->wherePivot('accepted', false);
     }
 
-    public function isAdmin()
+    public function hasRole($role)
     {
-        return $this->role === 'admin';
-    }
-
-public function isModerator()
-    {
-        return $this->role === 'moderator';
-    }
-
-public function isUser()
-    {
-        return $this->role === 'user';
+        return $this->role === $role;
     }
 
 

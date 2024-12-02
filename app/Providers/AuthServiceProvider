@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+
+class AuthServiceProvider extends ServiceProvider
+{
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
+     */
+    protected $policies = [
+        // Example: 'App\Models\Post' => 'App\Policies\PostPolicy',
+    ];
+
+    /**
+     * Register any authentication / authorization services.
+     */
+    public function boot(): void
+    {
+        $this->registerPolicies();
+
+        // Define a gate for admin-only access
+        Gate::define('admin-only', function ($user) {
+            return $user->role === 'admin'; // Assumes there is a 'role' field in the users table
+        });
+
+        // Define a gate for editor-only access
+        Gate::define('editor-only', function ($user) {
+            return $user->role === 'editor';
+        });
+
+        // Define a gate for basic user access
+        Gate::define('user-only', function ($user) {
+            return $user->role === 'user';
+        });
+
+        // Example of defining a gate for specific actions
+        Gate::define('edit-post', function ($user, $post) {
+            return $user->id === $post->user_id || $user->role === 'admin';
+        });
+    }
+}
