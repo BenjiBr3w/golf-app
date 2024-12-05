@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h1 class="text-2xl font-bold mb-6">My Posts</h1>
+    <h1 class="text-2xl text-white font-bold mb-6">My Posts</h1>
 
     @foreach ($userPosts as $post)
     <div class="post-container bg-white shadow rounded-lg p-6 mb-6">
