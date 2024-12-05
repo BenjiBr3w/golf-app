@@ -113,5 +113,41 @@ class PostsController extends Controller
         return view('user.myPosts', compact('userPosts'));
     }
 
+    public function edit(Post $post)
+    {
+        // Ensure the user is authorised to edit the post
+        if (auth()->id() !== $post->user_id) {
+            abort(403, 'You are not authorised to edit this post.');
+        }
+
+        return view('posts.edit', compact('post'));
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        // Ensure the user is authorised to update the post
+        if (auth()->id() !== $post->user_id) {
+            abort(403, 'You are not authorised to update this post.');
+        }
+
+        // Validate the form data
+        $request->validate([
+            'content' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Handle the image upload if present
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $post->image = $imagePath;
+        }
+
+        // Update the post
+        $post->content = $request->content;
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully!');
+    }
+
 
 }

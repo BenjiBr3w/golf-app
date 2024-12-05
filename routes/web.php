@@ -73,6 +73,10 @@ Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 
 Route::get('/my-posts', [PostsController::class, 'myPosts'])->name('posts.myPosts');
 
+Route::get('/posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit')->middleware('auth');
+
+Route::put('/posts/{post}', [PostsController::class, 'update'])->name('posts.update')->middleware('auth');
+
 
 
 

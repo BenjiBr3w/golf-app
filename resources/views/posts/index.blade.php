@@ -40,6 +40,13 @@
             </ul>
         </div>
 
+        @if ($post->user_id === auth()->id())
+            <a href="{{ route('posts.edit', $post->id) }}" 
+                class="bg-yellow-500 hover:bg-yellow-700 text-gray font-bold py-1 px-4 rounded mt-2 inline-block">
+                Edit
+            </a>
+        @endif
+
         <!-- Add a Comment -->
         <form 
             id="comment-form-{{ $post->id }}"
