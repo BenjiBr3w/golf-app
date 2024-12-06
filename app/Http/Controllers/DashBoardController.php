@@ -18,9 +18,13 @@ class DashboardController extends Controller
             $totalComments = Comment::count(); // Count all comments
             $friendCount = $user->friends()->count(); // Get the count of user's friends
             $notifications = auth()->user()->notifications;
+            $totalRounds = auth()->user()->scores->count();
+            $bestScore = auth()->user()->scores->min('score');
+            $uniqueCourses = auth()->user()->scores->groupBy('course_name')->count();
 
             // Pass data to the view
-            return view('dashboard', compact('totalPosts', 'totalComments', 'friendCount', 'notifications'));
+            return view('dashboard', compact('totalPosts', 'totalComments', 'friendCount', 'notifications',
+             'totalRounds', 'bestScore', 'uniqueCourses'));
         }
 
         // Redirect to login if no user is logged in

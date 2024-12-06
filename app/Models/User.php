@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        
     ];
 
     /**
@@ -85,6 +86,12 @@ class User extends Authenticatable
     {
         return $this->role === $role;
     }
+
+    public function scores()
+{
+    return $this->hasMany(Scores::class);
+}
+
 
 
     /**

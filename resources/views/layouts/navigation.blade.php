@@ -21,6 +21,12 @@
                     <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                         {{ __('Create a Post') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('scores.create')" :active="request()->routeIs('scores.create')">
+                        {{ __('Record a Round') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('leaderboard.index')" :active="request()->routeIs('leaderboard.index')">
+                        {{ __('Leaderboard') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -85,6 +91,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                 {{ __('Create a Post') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('scores.create')" :active="request()->routeIs('scores.create')">
+                {{ __('Record a Round') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('leaderboard.index')" :active="request()->routeIs('leaderboard.index')">
+                {{ __('Leaderboard') }}
             </x-responsive-nav-link>
         </div>
 

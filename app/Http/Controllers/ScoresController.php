@@ -8,11 +8,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Scores;
 
 class ScoresController extends Controller
 {
 
-    
+    public function index()
+    {
+        $rounds = auth()->user()->scores()->latest()->paginate(10);
+        return view('scores.index', compact('scores'));
+    }
+
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -21,7 +29,7 @@ class ScoresController extends Controller
             'date' => 'required|date',
         ]);
     
-        Round::create([
+        Scores::create([
             'user_id' => auth()->id(),
             'course_name' => $request->course_name,
             'score' => $request->score,
@@ -30,5 +38,13 @@ class ScoresController extends Controller
     
         return redirect()->route('dashboard')->with('success', 'Round added successfully!');
     }
+
+
+    public function create()
+    {
+        return view('scores.create');
+    }
+
+
     
 }

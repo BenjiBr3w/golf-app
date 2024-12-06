@@ -9,6 +9,8 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Kernel;
+use App\Http\Controllers\ScoresController;
+use App\Http\Controllers\LeaderboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -79,7 +81,30 @@ Route::put('/posts/{post}', [PostsController::class, 'update'])->name('posts.upd
 
 Route::delete('/posts/{post}', [PostsController::class, 'destroy'])->name('posts.destroy')->middleware('auth');
 
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 
+Route::middleware(['auth'])->group(function () {
+    // Round listing (if needed)
+    Route::get('/scores', [ScoresController::class, 'index'])->name('scores.index');
 
+    // Show form for creating a new round
+    Route::get('/scores/create', [ScoresController::class, 'create'])->name('scores.create');
+
+    // Store a newly created round
+    Route::post('/scores', [ScoresController::class, 'store'])->name('scores.store');
+
+    // Show a specific round
+    Route::get('/scores/{score}', [ScoresController::class, 'show'])->name('scores.show');
+
+    // Edit a round
+    Route::get('/scores/{score}/edit', [ScoresController::class, 'edit'])->name('scores.edit');
+
+    // Update a round
+    Route::put('/scores/{score}', [ScoresController::class, 'update'])->name('scores.update');
+
+    // Delete a round
+    Route::delete('/scores/{score}', [ScoresController::class, 'destroy'])->name('scores.destroy');
+
+});
 
 require __DIR__.'/auth.php';

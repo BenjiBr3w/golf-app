@@ -16,9 +16,14 @@ class ScoresFactory extends Factory
      */
     public function definition(): array
     {
+
+        $golfCourses = ['Pebble Beach', 'St. Andrews', 'Augusta National', 'Pinehurst', 'Bethpage Black'];
+
         return [
-            'score' => fake()->randomFloat(60, 150),
-            'player_id' => fake()->numberBetween(1,2),
+            'score' => fake()->numberBetween(60, 125),
+            'user_id' => fake()->numberBetween(1,2),
+            'course_name'=> fake()->randomElement($golfCourses),
+            'date'=>fake()->date('Y-m-d'),
         ];
     }
 }

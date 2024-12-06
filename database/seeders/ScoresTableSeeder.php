@@ -14,14 +14,6 @@ class ScoresTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $player = Player::first();
-        if ($player) {
-            $a = new Scores;
-            $a->score = 74;
-            $a->player_id = $player->id;
-            $a->save();
-        }
-
         Scores::factory()->count(30)->create();
     }
 }
