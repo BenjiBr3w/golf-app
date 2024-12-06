@@ -80,6 +80,18 @@
             </form>
         </div>
 
+        <div class="bg-white shadow-lg rounded-xl p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Leaderboard Summary</h3>
+            <ul class="space-y-4">
+                @foreach ($leaderboardSummary as $player)
+                <li class="flex justify-between items-center">
+                    <span class="text-gray-800 font-semibold">{{ $player->name }}</span>
+                    <span class="text-green-600 font-bold">{{ $player->best_score }}</span>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-indigo-500 text-gray p-4 rounded shadow">

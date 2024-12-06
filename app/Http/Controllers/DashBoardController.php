@@ -21,10 +21,20 @@ class DashboardController extends Controller
             $totalRounds = auth()->user()->scores->count();
             $bestScore = auth()->user()->scores->min('score');
             $uniqueCourses = auth()->user()->scores->groupBy('course_name')->count();
+            $leaderboardSummary = User::with(['scores' => function ($query) {
+                $query->select('user_id', \DB::raw('MIN(score) as best_score'))
+                      ->groupBy('user_id');
+            }])
+            ->join('scores', 'users.id', '=', 'scores.user_id')
+            ->select('users.id', 'users.name', \DB::raw('MIN(scores.score) as best_score'))
+            ->groupBy('users.id', 'users.name')
+            ->orderBy('best_score', 'asc')
+            ->limit(5)
+            ->get();
 
             // Pass data to the view
             return view('dashboard', compact('totalPosts', 'totalComments', 'friendCount', 'notifications',
-             'totalRounds', 'bestScore', 'uniqueCourses'));
+             'totalRounds', 'bestScore', 'uniqueCourses', 'leaderboardSummary'));
         }
 
         // Redirect to login if no user is logged in
