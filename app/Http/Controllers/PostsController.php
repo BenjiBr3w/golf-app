@@ -149,5 +149,16 @@ class PostsController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post updated successfully!');
     }
 
+    public function destroy(Post $post)
+    {
+
+        if (auth()->id() !== $post->user_id) {
+            abort(403, 'You are not authorised to delete this post.');
+        }
+
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
+    }
 
 }

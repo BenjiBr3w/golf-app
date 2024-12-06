@@ -47,6 +47,17 @@
             </a>
         @endif
 
+        @if ($post->user_id === auth()->id())
+            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" 
+                    class="bg-red-500 hover:bg-red-700 text-gray font-bold py-1 px-4 rounded mt-2">
+                    Delete
+                </button>
+            </form>
+        @endif
+
         <!-- Add a Comment -->
         <form 
             id="comment-form-{{ $post->id }}"

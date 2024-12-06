@@ -80,6 +80,22 @@
             </form>
         </div>
 
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-indigo-500 text-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold">Total Rounds</h3>
+                <p class="text-3xl font-bold">{{ $totalRounds }}</p>
+            </div>
+            <div class="bg-green-500 text-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold">Best Score</h3>
+                <p class="text-3xl font-bold">{{ $bestScore }}</p>
+            </div>
+            <div class="bg-yellow-500 text-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold">Courses Played</h3>
+                <p class="text-3xl font-bold">{{ $uniqueCourses }}</p>
+            </div>
+        </div>
+
         <!-- Search Results -->
         <div class="mt-8">
             <h3 class="text-xl font-semibold text-gray-800">Search Results</h3>
