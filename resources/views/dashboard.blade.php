@@ -1,122 +1,97 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Account Hub</h2>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Dashboard Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <!-- My Posts -->
+        <a href="{{ route('posts.myPosts') }}" class="bg-indigo-500 text-white rounded-lg shadow-lg p-6 hover:bg-indigo-600 transition transform hover:-translate-y-1">
+            <h3 class="text-lg font-semibold">My Posts</h3>
+            <p class="text-4xl font-extrabold">{{ $totalPosts }}</p>
+        </a>
 
-        <!-- Dashboard Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Posts Stats -->
-            <a href="{{ route('posts.myPosts') }}" class="bg-indigo-500 text-gray-100 rounded-lg shadow p-6 hover:bg-indigo-600 transition">
-                <h3 class="text-lg font-semibold">My Posts</h3>
-                <p class="text-3xl font-bold">{{ $totalPosts }}</p>
-            </a>
-
-            <!-- Friends Stats -->
-            <div 
-                class="bg-green-500 text-gray-100 rounded-lg shadow p-6 cursor-pointer hover:bg-green-600 transition" 
-                id="friends-box"
-                onclick="showFriendsList()"
-            >
-                <h3 class="text-lg font-semibold">Friends</h3>
-                <p class="text-3xl font-bold" id="friend-count">{{ $friendCount }}</p>
-            </div>
-
-            <!-- Notifications -->
-            <a href="#notifications" class="bg-yellow-500 text-gray-100 rounded-lg shadow p-6 hover:bg-yellow-600 transition">
-                <h3 class="text-lg font-semibold">Notifications</h3>
-                <p class="text-3xl font-bold">{{ $notifications->count() }}</p>
-            </a>
+        <!-- Friends -->
+        <div 
+            class="bg-green-500 text-white rounded-lg shadow-lg p-6 cursor-pointer hover:bg-green-600 transition transform hover:-translate-y-1"
+            id="friends-box"
+            onclick="showFriendsList()"
+        >
+            <h3 class="text-lg font-semibold">Friends</h3>
+            <p class="text-4xl font-extrabold" id="friend-count">{{ $friendCount }}</p>
         </div>
 
-        <!-- Notifications Section -->
-        <div id="notifications" class="bg-white shadow rounded-lg p-6 mt-8">
-            <h2 class="text-lg font-bold mb-4">Notifications</h2>
-            <ul class="list-disc pl-5">
-                @forelse ($notifications as $notification)
-                    <li class="mb-2">
-                        <strong>{{ $notification->data['commenter_name'] }}</strong> commented on your post: 
-                        <a href="{{ route('posts.show', $notification->data['post_id']) }}" class="text-blue-500 underline">
-                            {{ Str::limit($notification->data['content'], 50) }}
-                        </a>
-                        <span class="text-sm text-gray-500 block">{{ $notification->created_at->diffForHumans() }}</span>
-                    </li>
-                @empty
-                    <li class="text-gray-500">No notifications yet.</li>
-                @endforelse
-            </ul>
-        </div>
+        <!-- Notifications -->
+        <a href="#notifications" class="bg-yellow-500 text-white rounded-lg shadow-lg p-6 hover:bg-yellow-600 transition transform hover:-translate-y-1">
+            <h3 class="text-lg font-semibold">Notifications</h3>
+            <p class="text-4xl font-extrabold">{{ $notifications->count() }}</p>
+        </a>
+    </div>
 
-        <!-- Friends Modal -->
-        <div id="friends-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-lg p-6 w-96">
-                <h3 class="text-lg font-bold mb-4">Your Friends</h3>
-                <ul id="friends-list" class="space-y-2">
-                    <!-- Populated dynamically via JavaScript -->
-                </ul>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4" onclick="hideFriendsList()">Close</button>
-            </div>
-        </div>
-
-        <!-- Add Friend Section -->
-        <div class="mt-8">
-            <h3 class="text-xl font-semibold text-gray-800">Add a Friend</h3>
-            <form action="{{ route('friends.search') }}" method="POST" class="mt-4">
-                @csrf
-                <div class="flex items-center space-x-4">
-                    <input 
-                        type="text" 
-                        name="search" 
-                        placeholder="Search for a user..." 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                    >
-                    <button 
-                        type="submit" 
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
-                    >
-                        Search
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div class="bg-white shadow-lg rounded-xl p-6">
-            <h3 class="text-lg font-bold text-gray-800 mb-4">Leaderboard Summary</h3>
-            <ul class="space-y-4">
-                @foreach ($leaderboardSummary as $player)
+    <!-- Leaderboard Summary -->
+    <a href="{{ route('leaderboard.index') }}" class="block bg-white shadow-lg rounded-lg p-6 mb-8 hover:bg-gray-100 transition">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Leaderboard Summary</h2>
+        <ul class="space-y-4">
+            @foreach ($leaderboardSummary as $player)
                 <li class="flex justify-between items-center">
-                    <span class="text-gray-800 font-semibold">{{ $player->name }}</span>
-                    <span class="text-green-600 font-bold">{{ $player->best_score }}</span>
+                    <span class="text-gray-800 font-medium">{{ $player->name }}</span>
+                    <span class="text-green-500 font-extrabold text-lg">{{ $player->best_score }}</span>
                 </li>
-                @endforeach
-            </ul>
+            @endforeach
+        </ul>
+        <p class="text-blue-500 text-sm font-semibold mt-4">View Full Leaderboard &rarr;</p>
+    </a>
+
+    <!-- Additional Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Total Rounds -->
+        <div class="bg-blue-500 text-white rounded-lg shadow-lg p-6 hover:bg-blue-600 transition transform hover:-translate-y-1">
+            <h3 class="text-lg font-semibold">Total Rounds</h3>
+            <p class="text-4xl font-extrabold">{{ $totalRounds }}</p>
         </div>
 
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-indigo-500 text-gray p-4 rounded shadow">
-                <h3 class="text-lg font-semibold">Total Rounds</h3>
-                <p class="text-3xl font-bold">{{ $totalRounds }}</p>
-            </div>
-            <div class="bg-green-500 text-gray p-4 rounded shadow">
-                <h3 class="text-lg font-semibold">Best Score</h3>
-                <p class="text-3xl font-bold">{{ $bestScore }}</p>
-            </div>
-            <div class="bg-yellow-500 text-gray p-4 rounded shadow">
-                <h3 class="text-lg font-semibold">Courses Played</h3>
-                <p class="text-3xl font-bold">{{ $uniqueCourses }}</p>
-            </div>
+        <!-- Best Score -->
+        <div class="bg-red-500 text-white rounded-lg shadow-lg p-6 hover:bg-red-600 transition transform hover:-translate-y-1">
+            <h3 class="text-lg font-semibold">Best Score</h3>
+            <p class="text-4xl font-extrabold">{{ $bestScore }}</p>
         </div>
 
-        <!-- Search Results -->
-        <div class="mt-8">
-            <h3 class="text-xl font-semibold text-gray-800">Search Results</h3>
-            <ul id="search-results" class="space-y-2 mt-4">
-                @foreach ($searchResults ?? [] as $user)
-                    <li class="flex justify-between items-center p-2 bg-gray-100 rounded">
-                        <span class="text-gray-800">{{ $user->name }}</span>
+        <!-- Unique Courses -->
+        <div class="bg-purple-500 text-white rounded-lg shadow-lg p-6 hover:bg-purple-600 transition transform hover:-translate-y-1">
+            <h3 class="text-lg font-semibold">Courses Played</h3>
+            <p class="text-4xl font-extrabold">{{ $uniqueCourses }}</p>
+        </div>
+    </div>
+
+    <!-- Search for Users to Add -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Search and Add Friends</h2>
+        <form action="{{ route('friends.search') }}" method="POST" class="flex items-center space-x-4">
+            @csrf
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search for a user..." 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            >
+            <button 
+                type="submit" 
+                class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
+            >
+                Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Search Results -->
+    @if(isset($searchResults) && count($searchResults) > 0)
+        <div class="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Search Results</h2>
+            <ul class="space-y-4">
+                @foreach ($searchResults as $user)
+                    <li class="flex justify-between items-center p-4 bg-gray-200 rounded-lg shadow">
+                        <span class="text-gray-800 font-medium">{{ $user->name }}</span>
                         <button 
-                            class="add-friend-button bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-4 rounded-lg"
+                            class="add-friend-button bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg"
                             data-friend-id="{{ $user->id }}"
                         >
                             Add Friend
@@ -125,52 +100,44 @@
                 @endforeach
             </ul>
         </div>
+    @elseif(isset($searchResults))
+        <div class="bg-gray-100 shadow-lg rounded-lg p-6">
+            <p class="text-gray-500">No users found matching your search.</p>
+        </div>
+    @endif
+
+    <!-- Friends Modal -->
+    <div id="friends-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h3 class="text-lg font-bold mb-4">Your Friends</h3>
+            <ul id="friends-list" class="space-y-2">
+                <!-- Populated dynamically via JavaScript -->
+            </ul>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4" onclick="hideFriendsList()">Close</button>
+        </div>
     </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
-    // Fetch friends and display in the modal
     function showFriendsList() {
         fetch('{{ route('api.friends') }}')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch friends');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(friends => {
                 const friendsList = document.getElementById('friends-list');
-                friendsList.innerHTML = ''; // Clear previous list
-
-                // Populate list with friends
-                if (friends.length > 0) {
-                    friends.forEach(friend => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = friend.name;
-                        listItem.className = 'text-gray-700 p-2 bg-gray-100 rounded';
-                        friendsList.appendChild(listItem);
-                    });
-                } else {
-                    const emptyMessage = document.createElement('li');
-                    emptyMessage.textContent = 'No friends found.';
-                    emptyMessage.className = 'text-gray-700 p-2 bg-gray-100 rounded';
-                    friendsList.appendChild(emptyMessage);
-                }
-
-                // Show the modal
+                friendsList.innerHTML = friends.length 
+                    ? friends.map(friend => `<li class="text-gray-700 p-2 bg-gray-100 rounded">${friend.name}</li>`).join('')
+                    : '<li class="text-gray-500 p-2 bg-gray-100 rounded">No friends found.</li>';
                 document.getElementById('friends-modal').classList.remove('hidden');
             })
-            .catch(error => {
-                console.error(error);
-                alert('Could not load friends list. Please try again later.');
-            });
+            .catch(() => alert('Could not load friends list. Try again later.'));
     }
 
-    // Hide the modal
     function hideFriendsList() {
         document.getElementById('friends-modal').classList.add('hidden');
     }
 </script>
 @endsection
+
 

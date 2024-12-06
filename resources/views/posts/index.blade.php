@@ -2,93 +2,93 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h1 class="text-2xl text-white font-bold mb-6">Friends' Posts</h1>
+    <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Friends' Posts</h1>
 
-    @foreach ($posts as $post)
-    <div class="post-container bg-white shadow rounded-lg p-6 mb-6">
-        <!-- Post Header -->
-        <h2 class="text-lg font-semibold">
-            <a href="{{ route('user.show', $post->user->id) }}" class="text-blue-600 hover:underline">
-                {{ $post->user->name }}
-            </a>
-            <span class="text-gray-500 text-sm">posted on {{ $post->created_at->format('d M Y, H:i') }}</span>
-        </h2>
+    @forelse ($posts as $post)
+        <div class="post-container bg-white shadow-md rounded-lg p-6 mb-6">
+            <!-- Post Header -->
+            <h2 class="text-xl font-semibold text-gray-800">
+                <a href="{{ route('user.show', $post->user->id) }}" class="text-blue-600 hover:underline">
+                    {{ $post->user->name }}
+                </a>
+                <span class="text-sm text-gray-500 block mt-1">posted on {{ $post->created_at->format('d M Y, H:i') }}</span>
+            </h2>
 
-        <!-- Post Content -->
-        <p class="mt-4 text-gray-700">{{ $post->content }}</p>
+            <!-- Post Content -->
+            <p class="mt-4 text-gray-700">{{ $post->content }}</p>
 
-        <!-- Post Image (Optional) -->
-        @if ($post->image)
-        <div class="mt-4">
-            <img src="{{ asset('storage/' . $post->image) }}" alt="Post image" class="w-full rounded-lg">
-        </div>
-        @endif
+            <!-- Post Image (Optional) -->
+            @if ($post->image)
+                <div class="mt-4">
+                    <img src="{{ asset('storage/' . $post->image) }}" alt="Post image" class="w-full rounded-lg shadow">
+                </div>
+            @endif
 
-        <!-- Comments Section -->
-        <div class="mt-6">
-            <h3 class="text-md font-semibold">Comments</h3>
-            <ul class="comments-list mt-2 space-y-4">
-                @foreach ($post->comments as $comment)
-                <li class="mb-4 bg-gray-100 p-3 rounded-lg">
-                    <a href="{{ route('user.show', $comment->user->id) }}" class="text-blue-600 hover:underline">
-                        <strong>{{ $comment->user->name }}</strong>
+            <!-- Comments Section -->
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-800">Comments</h3>
+                <ul class="comments-list mt-4 space-y-4">
+                    @foreach ($post->comments as $comment)
+                        <li class="mb-4 bg-gray-100 p-4 rounded-lg shadow">
+                            <a href="{{ route('user.show', $comment->user->id) }}" class="text-blue-600 hover:underline font-semibold">
+                                {{ $comment->user->name }}
+                            </a>
+                            <span class="text-sm text-gray-500 block mt-1">said on {{ $comment->created_at->format('d M Y, H:i') }}</span>
+                            <p class="mt-2 text-gray-700">{{ $comment->content }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <!-- Post Actions (Edit & Delete for Owner) -->
+            @if ($post->user_id === auth()->id())
+                <div class="mt-4 flex space-x-2">
+                    <a href="{{ route('posts.edit', $post->id) }}" 
+                        class="bg-yellow-500 hover:bg-yellow-600 text-gray font-bold py-2 px-4 rounded-lg transition">
+                        Edit
                     </a>
-                    <span class="text-gray-500 text-sm">said on {{ $comment->created_at->format('d M Y, H:i') }}</span>
-                    <p>{{ $comment->content }}</p>
-                </li>
-                @endforeach
-            </ul>
-        </div>
+                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" 
+                            class="bg-red-500 hover:bg-red-600 text-gray font-bold py-2 px-4 rounded-lg transition">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            @endif
 
-        @if ($post->user_id === auth()->id())
-            <a href="{{ route('posts.edit', $post->id) }}" 
-                class="bg-yellow-500 hover:bg-yellow-700 text-gray font-bold py-1 px-4 rounded mt-2 inline-block">
-                Edit
-            </a>
-        @endif
-
-        @if ($post->user_id === auth()->id())
-            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+            <!-- Add a Comment -->
+            <form 
+                id="comment-form-{{ $post->id }}"
+                class="comment-form mt-6"
+                data-post-id="{{ $post->id }}"
+                method="POST"
+                action="{{ route('posts.comments.store', $post->id) }}"
+            >
                 @csrf
-                @method('DELETE')
-                <button type="submit" 
-                    class="bg-red-500 hover:bg-red-700 text-gray font-bold py-1 px-4 rounded mt-2">
-                    Delete
+                <textarea
+                    name="content"
+                    rows="3"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Write a comment..."
+                    required
+                ></textarea>
+                <button 
+                    type="submit" 
+                    class="bg-blue-500 hover:bg-blue-600 text-gray font-bold py-2 px-4 rounded-lg mt-2 transition">
+                    Add Comment
                 </button>
             </form>
-        @endif
-
-        <!-- Add a Comment -->
-        <form 
-            id="comment-form-{{ $post->id }}"
-            class="comment-form mt-4" 
-            data-post-id="{{ $post->id }}"
-            method="POST"
-            action="{{ route('posts.comments.store', $post->id) }}"
-        >
-            @csrf
-            <textarea
-                name="content"
-                rows="2"
-                class="w-full p-2 border rounded comment-input"
-                placeholder="Write a comment..."
-                required
-            ></textarea>
-            <button 
-                type="submit" 
-                class="bg-blue-500 hover:bg-blue-700 text-grey font-bold py-2 px-4 rounded mt-2"
-            >
-                Add Comment
-            </button>
-        </form>
-    </div>
-    @endforeach
+        </div>
+    @empty
+        <p class="text-gray-500 text-center">No posts available. Start following your friends to see their posts!</p>
+    @endforelse
 </div>
 @endsection
 
 @section('scripts')
 <script>
-    // Handle comment form submission via JavaScript for AJAX functionality
     document.querySelectorAll('.comment-form').forEach(form => {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -104,21 +104,19 @@
                 body: formData,
             })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Server responded with an error');
+                if (!response.ok) throw new Error('Failed to add comment.');
+                return response.json();
             })
             .then(data => {
                 if (data.success) {
                     const commentsList = this.closest('.post-container').querySelector('.comments-list');
                     const newComment = `
-                        <li class="mb-4 bg-gray-100 p-3 rounded-lg">
-                            <a href="/users/${data.comment.user.id}" class="text-blue-600 hover:underline">
-                                <strong>${data.comment.user.name}</strong>
+                        <li class="mb-4 bg-gray-100 p-4 rounded-lg shadow">
+                            <a href="/users/${data.comment.user.id}" class="text-blue-600 hover:underline font-semibold">
+                                ${data.comment.user.name}
                             </a>
-                            <span class="text-gray-500 text-sm">said just now</span>
-                            <p>${data.comment.content}</p>
+                            <span class="text-sm text-gray-500 block mt-1">said just now</span>
+                            <p class="mt-2 text-gray-700">${data.comment.content}</p>
                         </li>
                     `;
                     commentsList.insertAdjacentHTML('beforeend', newComment);
@@ -127,14 +125,12 @@
                     alert(data.message || 'Failed to add comment.');
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again later.');
-            });
+            .catch(error => console.error(error));
         });
     });
 </script>
 @endsection
+
 
 
 

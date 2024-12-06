@@ -1,35 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto">
-    <h1 class="text-3xl font-bold text-white text-center mb-6">Leaderboard</h1>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8">Leaderboard</h1>
 
     <!-- Leaderboard Table -->
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
-        <table class="table-auto w-full border-collapse border border-gray-200">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <table class="table-auto w-full border-collapse">
             <thead>
-                <tr>
-                    <th class="px-4 py-2 border border-gray-300 text-left">Player Name</th>
-                    <th class="px-4 py-2 border border-gray-300 text-center">Total Rounds</th>
-                    <th class="px-4 py-2 border border-gray-300 text-center">Best Score</th>
+                <tr class="bg-gray-200 text-gray-800 text-lg">
+                    <th class="px-6 py-3 border-b border-gray-300 text-left font-semibold">Player Name</th>
+                    <th class="px-6 py-3 border-b border-gray-300 text-center font-semibold">Total Rounds</th>
+                    <th class="px-6 py-3 border-b border-gray-300 text-center font-semibold">Best Score</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-gray-700">
                 @forelse ($leaderboard as $user)
-                    <tr>
-                        <td class="px-4 py-2 border border-gray-300">
-                            <a href="{{ route('user.show', $user->id) }}" class="text-blue-500 hover:underline">
+                    <tr class="hover:bg-gray-50 transition duration-200">
+                        <td class="px-6 py-4 border-b border-gray-300">
+                            <a href="{{ route('user.show', $user->id) }}" class="text-blue-600 hover:text-blue-800 font-medium">
                                 {{ $user->name }}
                             </a>
                         </td>
-                        <td class="px-4 py-2 border border-gray-300 text-center">{{ $user->scores_count }}</td>
-                        <td class="px-4 py-2 border border-gray-300 text-center">
+                        <td class="px-6 py-4 border-b border-gray-300 text-center">{{ $user->scores_count }}</td>
+                        <td class="px-6 py-4 border-b border-gray-300 text-center">
                             {{ $user->scores->first()?->best_score ?? 'N/A' }}
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="px-4 py-2 border border-gray-300 text-center text-gray-500">
+                        <td colspan="3" class="px-6 py-4 border-b border-gray-300 text-center text-gray-500">
                             No scores available yet.
                         </td>
                     </tr>
@@ -40,7 +40,7 @@
 
     <!-- Notification Section for Success -->
     <div id="notification" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <p class="text-center text-lg font-semibold text-green-600" id="notification-message"></p>
             <button class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4 mx-auto block" onclick="hideNotification()">
                 Close
@@ -121,5 +121,6 @@
     });
 </script>
 @endsection
+
 
 
