@@ -13,25 +13,19 @@ class CommentNotification extends Notification implements ShouldQueue
 
     public $comment;
 
-    /**
-     * Create a new notification instance.
-     */
+    //Creates a new notification instance.
     public function __construct($comment)
     {
         $this->comment = $comment;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     */
+    //Gets the notification's delivery channels.
     public function via($notifiable)
     {
         return ['database'];
     }
 
-    /**
-     * Get the array representation of the notification.
-     */
+    //Gets the array representation of the notification.
     public function toArray($notifiable)
     {
         return [

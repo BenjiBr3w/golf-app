@@ -11,12 +11,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user = Auth::user(); // Use Auth facade to get the currently logged-in user
+        $user = Auth::user(); //Gets the currently logged in user
 
         if ($user) {
-            $totalPosts = auth()->user()->posts()->count(); // Count all posts
-            $totalComments = Comment::count(); // Count all comments
-            $friendCount = $user->friends()->count(); // Get the count of user's friends
+            $totalPosts = auth()->user()->posts()->count();
+            $totalComments = Comment::count();
+            $friendCount = $user->friends()->count();
             $notifications = auth()->user()->notifications;
             $totalRounds = auth()->user()->scores->count();
             $bestScore = auth()->user()->scores->min('score');
@@ -32,7 +32,7 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-            // Pass data to the view
+            // Passes data to the view
             return view('dashboard', compact('totalPosts', 'totalComments', 'friendCount', 'notifications',
              'totalRounds', 'bestScore', 'uniqueCourses', 'leaderboardSummary'));
         }
@@ -50,7 +50,7 @@ class DashboardController extends Controller
         }
 
         $friends = $user->friends()
-            ->select('users.id as user_id', 'users.name') // Resolve ambiguity
+            ->select('users.id as user_id', 'users.name')
             ->get();
 
         return response()->json($friends);

@@ -13,19 +13,16 @@ class PostsController extends Controller
     {
         $user = Auth::user();
 
-        // Check if user is authenticated
         if (!$user) {
             return redirect()->route('login')->with('error', 'You must be logged in to view this page.');
         }
 
-        // Retrieve friend IDs explicitly to avoid ambiguity
         $friendIds = $user->friends()->pluck('users.id');
 
         $friendIds->push($user->id);
 
-        // Fetch posts from friends
         $posts = Post::whereIn('user_id', $friendIds)
-            ->with(['user', 'comments.user']) // Load relationships
+            ->with(['user', 'comments.user'])
             ->orderBy('created_at', 'desc')
             ->get();
 

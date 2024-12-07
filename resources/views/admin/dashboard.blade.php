@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+<!-- This was an attempt to make an admin dashboard, however is not finalised -->
 @section('content')
     <div class="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-md">
         <h1 class="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>

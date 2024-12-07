@@ -52,7 +52,7 @@
 
 @section('scripts')
 <script>
-    // Refresh leaderboard via AJAX
+    // Refreshes the leaderboard via AJAX
     function refreshLeaderboard() {
         fetch('/leaderboard')
             .then(response => {
@@ -69,7 +69,7 @@
             });
     }
 
-    // Display a notification
+    // Displays a notification
     function showNotification(message) {
         const notificationElement = document.getElementById('notification');
         const messageElement = document.getElementById('notification-message');
@@ -77,12 +77,12 @@
         notificationElement.classList.remove('hidden');
     }
 
-    // Hide the notification
+    // Hides the notification
     function hideNotification() {
         document.getElementById('notification').classList.add('hidden');
     }
 
-    // Listen for form submission and refresh leaderboard on success
+    // Listens for form submission and refreshes the leaderboard on success
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('score-form');
         if (form) {

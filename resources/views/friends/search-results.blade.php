@@ -10,7 +10,7 @@
                 <span class="user-name text-blue-500 font-semibold hover:text-blue-700">
                     {{ $user->name }}
                 </span>
-                <!-- Add Friend button with Tailwind classes -->
+                <!-- Add Friend button also styled with Tailwind classes -->
                 <button
                     class="add-friend-button bg-green-500 hover:bg-green-700 text-white py-1 px-4 rounded-lg"
                     data-friend-id="{{ $user->id }}"

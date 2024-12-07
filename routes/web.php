@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Kernel;
 use App\Http\Controllers\ScoresController;
 use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,14 +59,13 @@ Route::middleware(['role:moderator'])->group(function () {
     Route::get('/moderator/panel', [ModeratorController::class, 'index'])->name('moderator.panel');
 });
 
-// Route for viewing all posts
+
 Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
 
-// Route for creating a new post (no postId needed here)
 Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');
+
 Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
 
-// Route for adding a comment to an existing post (postId required)
 Route::post('/posts/{post}/comments', [PostsController::class, 'storeComment'])
     ->middleware('auth')
     ->name('posts.comments.store');
@@ -83,26 +83,26 @@ Route::delete('/posts/{post}', [PostsController::class, 'destroy'])->name('posts
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 
+Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+
+Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
 Route::middleware(['auth'])->group(function () {
-    // Round listing (if needed)
+    
     Route::get('/scores', [ScoresController::class, 'index'])->name('scores.index');
 
-    // Show form for creating a new round
     Route::get('/scores/create', [ScoresController::class, 'create'])->name('scores.create');
 
-    // Store a newly created round
     Route::post('/scores', [ScoresController::class, 'store'])->name('scores.store');
 
-    // Show a specific round
     Route::get('/scores/{score}', [ScoresController::class, 'show'])->name('scores.show');
 
-    // Edit a round
     Route::get('/scores/{score}/edit', [ScoresController::class, 'edit'])->name('scores.edit');
 
-    // Update a round
     Route::put('/scores/{score}', [ScoresController::class, 'update'])->name('scores.update');
 
-    // Delete a round
     Route::delete('/scores/{score}', [ScoresController::class, 'destroy'])->name('scores.destroy');
 
 });

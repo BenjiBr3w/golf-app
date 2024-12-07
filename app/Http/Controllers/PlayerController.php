@@ -40,15 +40,15 @@ class PlayerController extends Controller
         ]);
 
         $user = new User();
-        $user->name = $validatedData['name']; // Using player name as user name
-        $user->email = uniqid() . '@example.com'; // Generate a unique email placeholder
-        $user->password = bcrypt('password'); // Set a default password
+        $user->name = $validatedData['name'];
+        $user->email = uniqid() . '@example.com';
+        $user->password = bcrypt('password');
         $user->save();
 
         $player = new Player();
         $player->name = $validatedData['name'];
         $player->handicap = $validatedData['handicap'];
-        $player->user_id = $user->id; // Assign the ID of the newly created User
+        $player->user_id = $user->id;
 
 
         $player->save();
